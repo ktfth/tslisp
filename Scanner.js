@@ -60,12 +60,24 @@ var Scanner = /** @class */ (function () {
         return c >= '0'.charCodeAt(0) && c <= '9'.charCodeAt(0);
     };
     Scanner.prototype.number = function () {
-        this.addToken(TokenType_1["default"].NUMBER, parseInt(this.source.substring(this.start, this.current), 10));
+        while (this.isDigit(this.peek()))
+            this.advance();
+        if (this.peek() === '.'.charCodeAt(0) && this.isDigit(this.peekNext())) {
+            this.advance();
+            while (this.isDigit(this.peek()))
+                this.advance();
+        }
+        this.addToken(TokenType_1["default"].NUMBER, parseFloat(this.source.substring(this.start, this.current)));
     };
     Scanner.prototype.peek = function () {
         if (this.isAtEnd())
             return '\0'.charCodeAt(0);
         return this.source.charCodeAt(this.current);
+    };
+    Scanner.prototype.peekNext = function () {
+        if (this.current + 1 >= this.source.length)
+            return '\0';
+        return this.source.charCodeAt(this.current + 1);
     };
     return Scanner;
 }());

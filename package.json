@@ -6,6 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "build": "tsc index.ts",
+    "build:tool-generate-ast": "tsc tool/GenerateAst.ts",
+    "build:ast-printer": "tsc AstPrinter.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

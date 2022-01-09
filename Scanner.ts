@@ -70,12 +70,25 @@ export default class Scanner implements IScanner {
   }
 
   number() {
+    while (this.isDigit(this.peek())) this.advance();
+
+    if (this.peek() === '.'.charCodeAt(0) && this.isDigit(this.peekNext())) {
+      this.advance();
+
+      while (this.isDigit(this.peek())) this.advance();
+    }
+
     this.addToken(TokenType.NUMBER,
-      parseInt(this.source.substring(this.start, this.current), 10));
+      parseFloat(this.source.substring(this.start, this.current)));
   }
 
   peek() {
     if (this.isAtEnd()) return '\0'.charCodeAt(0);
     return this.source.charCodeAt(this.current);
+  }
+
+  peekNext() {
+    if (this.current + 1 >= this.source.length) return '\0';
+    return this.source.charCodeAt(this.current + 1);
   }
 }
