@@ -15,8 +15,6 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-var Token_1 = require("./Token");
-var TokenType_1 = require("./TokenType");
 var Expr = require("./Expr");
 var AstPrinter = /** @class */ (function (_super) {
     __extends(AstPrinter, _super);
@@ -29,7 +27,7 @@ var AstPrinter = /** @class */ (function (_super) {
     AstPrinter.prototype.visitBinaryExpr = function (expr) {
         return this.parenthesized(expr.operator.lexeme, expr.left, expr.right);
     };
-    AstPrinter.prototype.visitGroupExpr = function (expr) {
+    AstPrinter.prototype.visitGroupingExpr = function (expr) {
         return this.parenthesized('group', expr.expression);
     };
     AstPrinter.prototype.visitLiteralExpr = function (expr) {
@@ -58,5 +56,11 @@ var AstPrinter = /** @class */ (function (_super) {
     };
     return AstPrinter;
 }(Expr.Expr));
-var expression = new Expr.Binary(new Token_1["default"](TokenType_1["default"].PLUS, '+', null, 1), new Expr.Literal(5), new Expr.Literal(5));
-console.log(new AstPrinter().print(expression));
+exports["default"] = AstPrinter;
+// const expression = new Expr.Binary(
+//   new Token(TokenType.PLUS, '+', null, 1),
+//   new Expr.Literal(5),
+//   new Expr.Literal(5),
+// );
+//
+// console.log(new AstPrinter().print(expression));

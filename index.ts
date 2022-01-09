@@ -5,6 +5,9 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as readline from 'readline';
 import Scanner from './Scanner';
+import Parser from './Parser';
+import AstPrinter from './AstPrinter';
+import TokenType from './TokenType';
 
 const args = process.argv.slice(2);
 
@@ -53,14 +56,18 @@ async function runPrompt() {
 function run(source) {
   const scanner = new Scanner(source);
   const tokens = scanner.scanTokens();
+  const parser = new Parser(tokens);
+  const expression = parser.parse();
 
-  for (let token of tokens) {
-    console.log(token);
-  }
+  console.log(new AstPrinter().print(expression));
 }
 
-function error(line, message) {
-  report(line, '', message);
+export function error(token, message) {
+  if (token.type === TokenType.EOF) {
+    report(token.lien, ' at end', message);
+  } else {
+    report(token.line, ` at \'${token.lexeme}\'`, message);
+  }
 }
 
 function report(line, where, message) {

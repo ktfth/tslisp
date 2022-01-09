@@ -2,7 +2,7 @@ import Token from './Token';
 import TokenType from './TokenType';
 import * as Expr from './Expr';
 
-class AstPrinter extends Expr.Expr {
+export default class AstPrinter extends Expr.Expr {
   print(expr) {
     return expr.accept(this);
   }
@@ -12,7 +12,7 @@ class AstPrinter extends Expr.Expr {
       expr.left, expr.right);
   }
 
-  visitGroupExpr(expr) {
+  visitGroupingExpr(expr) {
     return this.parenthesized('group', expr.expression);
   }
 
@@ -40,10 +40,10 @@ class AstPrinter extends Expr.Expr {
   }
 }
 
-const expression = new Expr.Binary(
-  new Token(TokenType.PLUS, '+', null, 1),
-  new Expr.Literal(5),
-  new Expr.Literal(5),
-);
-
-console.log(new AstPrinter().print(expression));
+// const expression = new Expr.Binary(
+//   new Token(TokenType.PLUS, '+', null, 1),
+//   new Expr.Literal(5),
+//   new Expr.Literal(5),
+// );
+//
+// console.log(new AstPrinter().print(expression));

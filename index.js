@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
+exports.error = void 0;
 // A small lisp interpreter
 // Given an input ```(5 + 5)```
 // Then the output need to be ```10```
@@ -43,6 +44,9 @@ var fs = require("fs");
 var path = require("path");
 var readline = require("readline");
 var Scanner_1 = require("./Scanner");
+var Parser_1 = require("./Parser");
+var AstPrinter_1 = require("./AstPrinter");
+var TokenType_1 = require("./TokenType");
 var args = process.argv.slice(2);
 var hadError = false;
 (function () {
@@ -109,14 +113,19 @@ function runPrompt() {
 function run(source) {
     var scanner = new Scanner_1["default"](source);
     var tokens = scanner.scanTokens();
-    for (var _i = 0, tokens_1 = tokens; _i < tokens_1.length; _i++) {
-        var token = tokens_1[_i];
-        console.log(token);
+    var parser = new Parser_1["default"](tokens);
+    var expression = parser.parse();
+    console.log(new AstPrinter_1["default"]().print(expression));
+}
+function error(token, message) {
+    if (token.type === TokenType_1["default"].EOF) {
+        report(token.lien, ' at end', message);
+    }
+    else {
+        report(token.line, " at '".concat(token.lexeme, "'"), message);
     }
 }
-function error(line, message) {
-    report(line, '', message);
-}
+exports.error = error;
 function report(line, where, message) {
     console.error("[line ".concat(line, "] Error ").concat(where, ": ").concat(message));
     hadError = true;
