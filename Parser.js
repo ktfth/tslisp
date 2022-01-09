@@ -63,11 +63,16 @@ var Parser = /** @class */ (function () {
         }
         if (this.match(TokenType_1["default"].PLUS)) {
             var operator = this.previous();
-            var left = new Expr_1.Literal(this.peek().literal);
-            this.advance();
-            var right = new Expr_1.Literal(this.peek().literal);
-            this.advance();
-            return new Expr_1.Binary(operator, left, right);
+            var values = [];
+            while (this.match(TokenType_1["default"].NUMBER)) {
+                var expr = new Expr_1.Literal(this.previous().literal);
+                values.push(expr);
+            }
+            if (this.check(TokenType_1["default"].LEFT_PAREN)) {
+                var expr = this.expression();
+                values.push(expr);
+            }
+            return new Expr_1.Binary(operator, values);
         }
         throw this.error(this.peek(), 'Expect expression.');
     };

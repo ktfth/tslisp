@@ -9,7 +9,7 @@ export default class AstPrinter extends Expr.Expr {
 
   visitBinaryExpr(expr) {
     return this.parenthesized(expr.operator.lexeme,
-      expr.left, expr.right);
+      expr.values);
   }
 
   visitGroupingExpr(expr) {
@@ -31,8 +31,15 @@ export default class AstPrinter extends Expr.Expr {
     builder.push('(');
     builder.push(name);
     for (let expr of exprs) {
-      builder.push(' ');
-      builder.push(expr.accept(this));
+      if (expr.constructor.toString().indexOf('Array') > -1) {
+        for (let sub of expr) {
+          builder.push(' ');
+          builder.push(sub.accept(this));
+        }
+      } else {
+        builder.push(' ');
+        builder.push(expr.accept(this));
+      }
     }
     builder.push(')');
 

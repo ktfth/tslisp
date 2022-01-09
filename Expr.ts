@@ -5,14 +5,12 @@ export class Expr {
 
 export class Binary extends Expr {
   operator: Token;
-  left: Expr;
-  right: Expr;
+  values: Array<Expr>;
 
-  constructor(operator: Token, left: Expr, right: Expr) {
+  constructor(operator: Token, values: Array<Expr>) {
     super();
     this.operator = operator;
-    this.left = left;
-    this.right = right;
+    this.values = values;
   }
 
   accept(visitor) {

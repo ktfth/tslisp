@@ -24,11 +24,10 @@ var Expr = /** @class */ (function () {
 exports.Expr = Expr;
 var Binary = /** @class */ (function (_super) {
     __extends(Binary, _super);
-    function Binary(operator, left, right) {
+    function Binary(operator, values) {
         var _this = _super.call(this) || this;
         _this.operator = operator;
-        _this.left = left;
-        _this.right = right;
+        _this.values = values;
         return _this;
     }
     Binary.prototype.accept = function (visitor) {

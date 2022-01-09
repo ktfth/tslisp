@@ -1,7 +1,7 @@
 import TokenType from './TokenType';
 import {
   Binary,
-  Unary,
+  // Unary,
   Literal,
   Grouping,
 } from './Expr';
@@ -55,11 +55,16 @@ export default class Parser {
 
     if (this.match(TokenType.PLUS)) {
       const operator = this.previous();
-      const left = new Literal(this.peek().literal);
-      this.advance();
-      const right = new Literal(this.peek().literal);
-      this.advance();
-      return new Binary(operator, left, right);
+      const values = [];
+      while (this.match(TokenType.NUMBER)) {
+        const expr = new Literal(this.previous().literal);
+        values.push(expr);
+      }
+      if (this.check(TokenType.LEFT_PAREN)) {
+        const expr = this.expression();
+        values.push(expr);
+      }
+      return new Binary(operator, values);
     }
 
     throw this.error(this.peek(), 'Expect expression.');

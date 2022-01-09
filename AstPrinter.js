@@ -25,7 +25,7 @@ var AstPrinter = /** @class */ (function (_super) {
         return expr.accept(this);
     };
     AstPrinter.prototype.visitBinaryExpr = function (expr) {
-        return this.parenthesized(expr.operator.lexeme, expr.left, expr.right);
+        return this.parenthesized(expr.operator.lexeme, expr.values);
     };
     AstPrinter.prototype.visitGroupingExpr = function (expr) {
         return this.parenthesized('group', expr.expression);
@@ -48,8 +48,17 @@ var AstPrinter = /** @class */ (function (_super) {
         builder.push(name);
         for (var _a = 0, exprs_1 = exprs; _a < exprs_1.length; _a++) {
             var expr = exprs_1[_a];
-            builder.push(' ');
-            builder.push(expr.accept(this));
+            if (expr.constructor.toString().indexOf('Array') > -1) {
+                for (var _b = 0, expr_1 = expr; _b < expr_1.length; _b++) {
+                    var sub = expr_1[_b];
+                    builder.push(' ');
+                    builder.push(sub.accept(this));
+                }
+            }
+            else {
+                builder.push(' ');
+                builder.push(expr.accept(this));
+            }
         }
         builder.push(')');
         return builder.join('');

@@ -9,7 +9,7 @@ if (args.length !== 1) {
 }
 var outputDir = path.join(process.cwd(), args[0]);
 defineAst(outputDir, 'Expr', [
-    'Binary   : Token operator, Expr left, Expr right',
+    'Binary   : Token operator, Array<Expr> values',
     'Grouping : Expr expression',
     'Literal  : Object value',
     'Unary    : Token operator, Expr right',
