@@ -6,12 +6,14 @@ import * as path from 'path';
 import * as readline from 'readline';
 import Scanner from './Scanner';
 import Parser from './Parser';
-import AstPrinter from './AstPrinter';
+import Interpreter from './Interpreter';
 import TokenType from './TokenType';
 
 const args = process.argv.slice(2);
 
+const interpreter = new Interpreter();
 let hadError = false;
+let hadRuntimeError = false;
 
 (async function () {
   if (args.length > 1) {
@@ -59,7 +61,7 @@ function run(source) {
   const parser = new Parser(tokens);
   const expression = parser.parse();
 
-  console.log(new AstPrinter().print(expression));
+  interpreter.interpret(expression);
 }
 
 export function error(token, message) {
@@ -68,6 +70,12 @@ export function error(token, message) {
   } else {
     report(token.line, ` at \'${token.lexeme}\'`, message);
   }
+}
+
+export function runtimeError(error) {
+  console.log(error);
+  console.log(`${error.message}\n[line ${error.token.line}]`);
+  hadRuntimeError = true;
 }
 
 function report(line, where, message) {

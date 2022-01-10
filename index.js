@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.error = void 0;
+exports.runtimeError = exports.error = void 0;
 // A small lisp interpreter
 // Given an input ```(5 + 5)```
 // Then the output need to be ```10```
@@ -45,10 +45,12 @@ var path = require("path");
 var readline = require("readline");
 var Scanner_1 = require("./Scanner");
 var Parser_1 = require("./Parser");
-var AstPrinter_1 = require("./AstPrinter");
+var Interpreter_1 = require("./Interpreter");
 var TokenType_1 = require("./TokenType");
 var args = process.argv.slice(2);
+var interpreter = new Interpreter_1["default"]();
 var hadError = false;
+var hadRuntimeError = false;
 (function () {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
@@ -115,7 +117,7 @@ function run(source) {
     var tokens = scanner.scanTokens();
     var parser = new Parser_1["default"](tokens);
     var expression = parser.parse();
-    console.log(new AstPrinter_1["default"]().print(expression));
+    interpreter.interpret(expression);
 }
 function error(token, message) {
     if (token.type === TokenType_1["default"].EOF) {
@@ -126,6 +128,12 @@ function error(token, message) {
     }
 }
 exports.error = error;
+function runtimeError(error) {
+    console.log(error);
+    console.log("".concat(error.message, "\n[line ").concat(error.token.line, "]"));
+    hadRuntimeError = true;
+}
+exports.runtimeError = runtimeError;
 function report(line, where, message) {
     console.error("[line ".concat(line, "] Error ").concat(where, ": ").concat(message));
     hadError = true;
