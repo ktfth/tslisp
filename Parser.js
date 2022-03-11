@@ -74,6 +74,19 @@ var Parser = /** @class */ (function () {
             }
             return new Expr_1.Binary(operator, values);
         }
+        if (this.match(TokenType_1["default"].MINUS)) {
+            var operator = this.previous();
+            var values = [];
+            while (this.match(TokenType_1["default"].NUMBER)) {
+                var expr = new Expr_1.Literal(this.previous().literal);
+                values.push(expr);
+            }
+            if (this.check(TokenType_1["default"].LEFT_PAREN)) {
+                var expr = this.expression();
+                values.push(expr);
+            }
+            return new Expr_1.Binary(operator, values);
+        }
         throw this.error(this.peek(), 'Expect expression.');
     };
     Parser.prototype.match = function () {

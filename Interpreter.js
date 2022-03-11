@@ -47,6 +47,11 @@ var Interpreter = /** @class */ (function () {
                     return values.reduce(function (a, b) { return a + b; });
                 }
                 break;
+            case TokenType_1["default"].MINUS:
+                if (values.some(function (value) { return value.constructor.toString().indexOf('Number') > -1; })) {
+                    return values.reduce(function (a, b) { return a - b; });
+                }
+                break;
         }
         return null;
     };

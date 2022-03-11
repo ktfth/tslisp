@@ -41,6 +41,7 @@ export default class Scanner implements IScanner {
       case '('.charCodeAt(0): this.addToken(TokenType.LEFT_PAREN); break;
       case ')'.charCodeAt(0): this.addToken(TokenType.RIGHT_PAREN); break;
       case '+'.charCodeAt(0): this.addToken(TokenType.PLUS); break;
+      case '-'.charCodeAt(0): this.addToken(TokenType.MINUS); break;
       case ' '.charCodeAt(0): break;
       default:
         if (this.isDigit(c)) {

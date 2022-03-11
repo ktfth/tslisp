@@ -34,6 +34,9 @@ var Scanner = /** @class */ (function () {
             case '+'.charCodeAt(0):
                 this.addToken(TokenType_1["default"].PLUS);
                 break;
+            case '-'.charCodeAt(0):
+                this.addToken(TokenType_1["default"].MINUS);
+                break;
             case ' '.charCodeAt(0): break;
             default:
                 if (this.isDigit(c)) {

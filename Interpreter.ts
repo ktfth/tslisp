@@ -53,6 +53,11 @@ export default class Interpreter {
           return values.reduce((a, b) => a + b);
         }
         break;
+      case TokenType.MINUS:
+        if (values.some(value => value.constructor.toString().indexOf('Number') > -1)) {
+          return values.reduce((a, b) => a - b);
+        }
+        break;
     }
 
     return null;

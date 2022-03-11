@@ -67,6 +67,20 @@ export default class Parser {
       return new Binary(operator, values);
     }
 
+    if (this.match(TokenType.MINUS)) {
+      const operator = this.previous();
+      const values = [];
+      while (this.match(TokenType.NUMBER)) {
+        const expr = new Literal(this.previous().literal);
+        values.push(expr);
+      }
+      if (this.check(TokenType.LEFT_PAREN)) {
+        const expr = this.expression();
+        values.push(expr);
+      }
+      return new Binary(operator, values);
+    }
+
     throw this.error(this.peek(), 'Expect expression.');
   }
 
